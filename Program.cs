@@ -7,7 +7,26 @@ class Program
 {
 	static void Main()
 	{
-		SDL.InitSubSystem(SDL.InitFlags.Audio);
+		try
+		{
+			SDL.InitSubSystem(SDL.InitFlags.Audio);
+		}
+		catch (DllNotFoundException)
+		{
+			string applicationFilePath = typeof(Program).Assembly.Location;
+
+			string applicationDirectory = Path.GetDirectoryName(Path.GetFullPath(applicationFilePath)) ?? ".";
+
+			string libraryFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+				? "SDL3.dll"
+				: "libSDL3.so";
+
+			Console.WriteLine("Place a copy of {0} in {1} and try again",
+				libraryFileName,
+				applicationDirectory);
+
+			return;
+		}
 
 		var desired =
 			new SDL.AudioSpec()
