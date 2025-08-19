@@ -21,9 +21,14 @@ class Program
 				? "SDL3.dll"
 				: "libSDL3.so";
 
-			Console.WriteLine("Place a copy of {0} in {1} and try again",
+			string environmentVariableName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+				? "PATH"
+				: "LD_LIBRARY_PATH";
+
+			Console.WriteLine("Place a copy of {0} in {1}, or set {2}, and try again",
 				libraryFileName,
-				applicationDirectory);
+				applicationDirectory,
+				environmentVariableName);
 
 			return;
 		}
